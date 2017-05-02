@@ -16,7 +16,7 @@ date
 if (echo $CHECKURL |grep -q "://");then
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
 LOCALIP=$(nslookup $DDNS|grep -Eo "$IPREX"|tail -n1)
-URLIP=$(curl -s $CHECKURI|grep -Eo "$IPREX"|tail -n1)
+URLIP=$(curl -s $CHECKURL|grep -Eo "$IPREX"|tail -n1)
 echo "[DNS IP]:$LOCALIP"
 echo "[URL IP]:$URLIP"
 if [ "$LOCALIP" == "$URLIP" ];then
