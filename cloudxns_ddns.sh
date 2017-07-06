@@ -5,7 +5,7 @@
 API_KEY="abcdefghijklmnopqrstuvwxyz1234567"
 SECRET_KEY="abcdefghijk12345"
 DDNS="home.xxxx.com"
-CHECKURL="http://ip.3322.org/"
+CHECKURL="http://ip.qq.com"
 #CONF END
 URL="http://www.cloudxns.net/api2/ddns"
 JSON="{\"domain\":\"$DDNS\"}"
