@@ -5,6 +5,7 @@
 API_KEY="abcdefghijklmnopqrstuvwxyz1234567"
 SECRET_KEY="abcdefghijk12345"
 DDNS="home.xxxx.com"
+#OUT="pppoe0"
 CHECKURL="http://ip.qq.com"
 #CONF END
 URL="http://www.cloudxns.net/api2/ddns"
@@ -24,7 +25,7 @@ echo "IP SAME,SIKP UPDATE."
 exit
 fi
 fi
-POST=$(curl -k -s $URL -X POST -d $JSON -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $NOWTIME" -H "API-HMAC: $HMAC" -H 'Content-Type: application/json')
+POST=$(curl $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -k -s $URL -X POST -d $JSON -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $NOWTIME" -H "API-HMAC: $HMAC" -H 'Content-Type: application/json')
 if (echo $POST |grep -q "success");then
 echo "API UPDATE DDNS SUCCESS"
 else echo -e "API UPDATE DDNS FAIL\nFAIL INFO:\n$POST"
