@@ -53,6 +53,6 @@ OUT|指定使用某个网卡设备进行联网通信（默认被注释掉）。�
 [DNS IP]为Get Domain Failed|本地DNS解析出现问题（断网、DNS服务器不工作、域名记录错误）
 [URL IP]为空|访问CHECKURL失败，检查网络访问CHECKURL是否正常
 Host record does not exist|不存在该域名或者该主机记录（本脚本**不会**自动创建子域名，请务必先到后台添加一个随意的子域名A记录）
-[URL IP]或者[DEV IP] 和[DNS IP]不一样但和[API IP]一样|DNS有缓存，DNS记录是已经更新，属正常现象，会提示IP SAME IN API,SKIP UPDATE.自动忽略
+[URL IP]或者[DEV IP] 和[DNS IP]不一样但和[API IP]一样|DNS有缓存，DNS记录是已经更新，属正常现象
 ### **关于**
 https://03k.org/cloudxns-ddns-with-bashshell.html
