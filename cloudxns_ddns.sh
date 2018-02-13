@@ -10,8 +10,6 @@ CHECKURL="http://ip.qq.com"
 #CONF END
 APIURL="http://www.cloudxns.net/api2/ddns"
 JSON="{\"domain\":\"$DOMAIN\"}"
-NOWTIME=$(env LANG=en_US.UTF-8 date +'%a %h %d %H:%M:%S %Y')
-HMAC=$(echo -n $API_KEY$APIURL$JSON$NOWTIME$SECRET_KEY|md5sum|cut -d' ' -f1)
 
 date
 if (echo $CHECKURL |grep -q "://");then
@@ -26,6 +24,8 @@ echo "IP SAME IN DNS,SKIP UPDATE."
 exit
 fi
 fi
+NOWTIME=$(env LANG=en_US.UTF-8 date +'%a %h %d %H:%M:%S %Y')
+HMAC=$(echo -n $API_KEY$APIURL$JSON$NOWTIME$SECRET_KEY|md5sum|cut -d' ' -f1)
 POST=$(curl $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -k -s $APIURL -X POST -d $JSON -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $NOWTIME" -H "API-HMAC: $HMAC" -H 'Content-Type: application/json')
 if (echo $POST |grep -q "success");then
 echo "API UPDATE DDNS SUCCESS $URLIP"
