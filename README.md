@@ -3,7 +3,7 @@
 >用于CloudXns的Powershell脚本另见：  
 https://github.com/lixuy/CloudXNS-DDNS-with-PowerShell  
 用于DNSPOD的Shell脚本另见：  
-https://github.com/lixuy/CloudXNS-DDNS-with-BashShell  
+https://github.com/lixuy/Dnspod-DDNS-with-BashShell  
 ## 使用方法
 本脚本分为两个版本，一个是获取自己外网ip的版本cloudxns_ddns.sh，一个是直接获取自己网卡设备上的ip的版本cloudxns_ddns_line.sh（对于多拨或者路由器网关用户适用）。
 ### 获取API的API_KEY和SECRET_KEY
