@@ -10,7 +10,7 @@ CHECKURL="http://ip.qq.com"
 #CONF END
 APIURL="http://www.cloudxns.net/api2/ddns"
 JSON="{\"domain\":\"$DOMAIN\"}"
-
+. /etc/profile
 date
 if (echo $CHECKURL |grep -q "://");then
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
