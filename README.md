@@ -16,7 +16,7 @@ APi的API_KEY和SECRET_KEY可以在用户中心开启获取：
 |API_KEY | 在个人中心后台的安全设置里面获取API_KEY|
 SECRET_KEY|在个人中心后台的安全设置里面获取SECRET_KEY
 DOMAIN| 用作动态DNS的域名，例如```ddns.mydomain.com```，```home.example.com```，注意所填写的域名必须在你的账号下并且有存在解析记录。
-CHECKURL|用于检查自己的外网IP是什么的网址，注释掉该参数会跳过所有检查（仅验证域名记录是否存在）直接执行更新记录（会导致高频率调用更新）；建议的备选CHECKURL：```http://ip.qq.com``` ```http://ip.3322.org``` ```http://myip.ipip.net``` ```http://checkip.dns.he.net``` ```https://api-ipv4.ip.sb```
+CHECKURL|用于检查自己的外网IP是什么的网址，注释掉该参数会跳过所有检查（仅验证域名记录是否存在）直接执行更新记录（会导致高频率调用更新）；建议的备选CHECKURL：```http://ip.qq.com``` ```http://ip.3322.org``` ```http://myip.ipip.net``` ```http://checkip.dns.he.net``` ```https://api.ip.sb/ip```
 OUT|指定使用某个网卡设备进行联网通信（默认被注释掉）。注意，一些系统的负载均衡功能可能会导致该参数无效。推荐使用```ip a```命令或者```ifconfig```命令查看网卡设备名称。
 
 #### **推荐的部署方法**
