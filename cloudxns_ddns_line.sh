@@ -15,12 +15,15 @@ date
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
 ipcmd="ip addr show";type ip >/dev/null 2>&1||ipcmd="ifconfig"
 DEVIP=$($ipcmd $DEV|grep -Eo "$IPREX"|head -n1)
+if (echo $DEVIP |grep -qEvo "$IPREX");then
+DEVIP="Get $DOMAIN DEVIP Failed."
+fi
 echo "[DEV IP]:$DEVIP"
 dnscmd="nslookup";type nslookup >/dev/null 2>&1||dnscmd="ping -c1"
 DNSTEST=$($dnscmd $DOMAIN)
-if [ "$?" == 0 ];then
-DNSIP=$(echo $DNSTEST|grep -Eo "$IPREX"|tail -n1)
-else DNSIP="Get $DOMAIN DNS Failed."
+if [ "$?" != 0 ]&&[ "$dnscmd" == "nslookup" ]||(echo $DNSTEST |grep -qEvo "$IPREX");then
+DNSIP="Get $DOMAIN DNS Failed."
+else DNSIP=$(echo $DNSTEST|grep -Eo "$IPREX"|tail -n1)
 fi
 echo "[DNS IP]:$DNSIP"
 if [ "$DNSIP" == "$DEVIP" ];then

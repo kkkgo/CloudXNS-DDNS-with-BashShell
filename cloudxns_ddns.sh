@@ -15,12 +15,15 @@ date
 if (echo $CHECKURL |grep -q "://");then
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
 URLIP=$(curl -4 $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $CHECKURL|grep -Eo "$IPREX"|tail -n1)
+if (echo $URLIP |grep -qEvo "$IPREX");then
+URLIP="Get $DOMAIN URLIP Failed."
+fi
 echo "[URL IP]:$URLIP"
 dnscmd="nslookup";type nslookup >/dev/null 2>&1||dnscmd="ping -c1"
 DNSTEST=$($dnscmd $DOMAIN)
-if [ "$?" == 0 ];then
-DNSIP=$(echo $DNSTEST|grep -Eo "$IPREX"|tail -n1)
-else DNSIP="Get $DOMAIN DNS Failed."
+if [ "$?" != 0 ]&&[ "$dnscmd" == "nslookup" ]||(echo $DNSTEST |grep -qEvo "$IPREX");then
+DNSIP="Get $DOMAIN DNS Failed."
+else DNSIP=$(echo $DNSTEST|grep -Eo "$IPREX"|tail -n1)
 fi
 echo "[DNS IP]:$DNSIP"
 if [ "$DNSIP" == "$URLIP" ];then
