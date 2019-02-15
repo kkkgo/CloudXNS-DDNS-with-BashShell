@@ -14,7 +14,14 @@ JSON="{\"domain\":\"$DOMAIN\"}"
 date
 if (echo $CHECKURL |grep -q "://");then
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
-URLIP=$(curl -4 $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $CHECKURL|grep -Eo "$IPREX"|tail -n1)
+URLIP=$(curl -k -4 $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $CHECKURL|grep -Eo "$IPREX"|tail -n1)
+if [ -n "$OUT" ]; then
+ipcmd="ip addr show";type ip >/dev/null 2>&1||ipcmd="ifconfig"
+OUTIP=$($ipcmd $OUT|grep -Eo "$IPREX"|head -n1)
+fi
+if  [ ! -n "$URLIP" ];then
+URLIP=$(wget --no-check-certificate --content-on-error -4 $(if [ -n "$OUT" ]; then echo "--bind-address=$OUTIP"; fi) -qO- $CHECKURL|grep -Eo "$IPREX"|tail -n1)
+fi
 if (echo $URLIP |grep -qEvo "$IPREX");then
 URLIP="Get $DOMAIN URLIP Failed."
 fi
@@ -33,7 +40,10 @@ fi
 fi
 NOWTIME=$(env LANG=en_US.UTF-8 date +'%a %h %d %H:%M:%S %Y')
 HMAC=$(echo -n $API_KEY$APIURL$JSON$NOWTIME$SECRET_KEY|md5sum|cut -d' ' -f1)
-POST=$(curl -4 $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -k -s $APIURL -X POST -d $JSON -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $NOWTIME" -H "API-HMAC: $HMAC" -H 'Content-Type: application/json')
+POST=$(curl -k -4 $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $APIURL -X POST -d $JSON -H "API-KEY: $API_KEY" -H "API-REQUEST-DATE: $NOWTIME" -H "API-HMAC: $HMAC" -H 'Content-Type: application/json')
+if  [ ! -n "$POST" ];then
+POST=$(wget --no-check-certificate --content-on-error -4 $(if [ -n "$OUT" ]; then echo "--bind-address=$OUTIP"; fi) -qO- $APIURL --post-data=$JSON --header="API-KEY: $API_KEY" --header="API-REQUEST-DATE: $NOWTIME" --header="API-HMAC: $HMAC" --header='Content-Type: application/json')
+fi
 if (echo $POST |grep -q "success");then
 echo "API UPDATE DDNS SUCCESS $URLIP"
 else echo "Error: $POST"
